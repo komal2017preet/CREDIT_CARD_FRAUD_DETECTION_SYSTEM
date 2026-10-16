@@ -462,19 +462,7 @@ with col_nav_bar:
         label_visibility="collapsed",
         horizontal=True
     )
-# Model Assignment
-if selected_model_name == "Random Forest (Ensemble)":
-    active_model = logistic_model
-else:
-    active_model = decision_tree_model
 
-# Check whether the selected model exists
-if active_model is None:
-    st.error(
-        "Selected model file is missing. "
-        "Please add the correct .pkl file to the repository."
-    )
-    st.stop()
 with col_model_sel:
     selected_model_name = st.selectbox(
         "Active Classifier",
@@ -490,6 +478,13 @@ if selected_model_name == "Random Forest (Ensemble)":
     active_model = logistic_model
 else:
     active_model = decision_tree_model
+
+if active_model is None:
+    st.error(
+        "Selected model file is missing. "
+        "Check your model files and filenames."
+    )
+    st.stop()
 
 st.markdown("<hr style='border-color: #e2e8f0; margin: 0 0 24px 0;'>", unsafe_allow_html=True)
 
