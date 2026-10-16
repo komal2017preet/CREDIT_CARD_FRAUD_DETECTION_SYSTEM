@@ -392,7 +392,7 @@ def load_models():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     logistic_path = os.path.join(
-        base_dir, "logistic_model.pkl"
+        base_dir, "Logistic_model.pkl"
     )
     tree_path = os.path.join(
         base_dir, "decision_tree_model.pkl"
