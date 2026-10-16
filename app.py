@@ -389,14 +389,25 @@ if "history" not in st.session_state:
 # ==========================================
 @st.cache_resource
 def load_models():
-    logistic_path = "logistic_model.pkl"
-    tree_path = "decision_tree_model.pkl"
-    
-    logistic_model = joblib.load(logistic_path) if os.path.exists(logistic_path) else None
-    tree_model = joblib.load(tree_path) if os.path.exists(tree_path) else None
-    
-    return logistic_model, tree_model
+    base_dir = os.path.dirname(os.path.abspath(__file__))
 
+    logistic_path = os.path.join(
+        base_dir, "logistic_model.pkl"
+    )
+    tree_path = os.path.join(
+        base_dir, "decision_tree_model.pkl"
+    )
+
+    logistic_model = None
+    tree_model = None
+
+    if os.path.exists(logistic_path):
+        logistic_model = joblib.load(logistic_path)
+
+    if os.path.exists(tree_path):
+        tree_model = joblib.load(tree_path)
+
+    return logistic_model, tree_model
 # ==========================================
 # HELPER FUNCTIONS
 # ==========================================
@@ -451,7 +462,19 @@ with col_nav_bar:
         label_visibility="collapsed",
         horizontal=True
     )
+# Model Assignment
+if selected_model_name == "Random Forest (Ensemble)":
+    active_model = logistic_model
+else:
+    active_model = decision_tree_model
 
+# Check whether the selected model exists
+if active_model is None:
+    st.error(
+        "Selected model file is missing. "
+        "Please add the correct .pkl file to the repository."
+    )
+    st.stop()
 with col_model_sel:
     selected_model_name = st.selectbox(
         "Active Classifier",
